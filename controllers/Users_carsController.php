@@ -4,6 +4,8 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use app\models\Users_cars;
+use app\models\Cars;
+use app\models\Users;
 use app\models\Users_carsSearch;
 use yii\data\ActiveDataProvider ;
 use yii\web\NotFoundHttpException;
@@ -12,6 +14,7 @@ use yii\web\NotFoundHttpException;
  **/
 class Users_carsController extends Controller
 {  
+    
     public function actionDataProvider(){
         $query = Users_cars::find();
         $provider = new ActiveDataProvider([
@@ -27,13 +30,27 @@ class Users_carsController extends Controller
      */
     public function actionCreate()
     {
+        
         $model = new Users_cars();
+
+        $userDropDown=[];
+        $users = Users::find()->all();
+        foreach ($users as $user) {
+            $userDropDown[$user->id] = $user->name;
+            var_dump($userDropDown);
+        }
+        $carDropDown=[];
+        $cars = Cars::find()->all();
+        foreach ($cars as $car) {
+            $carDropDown[$car->id] = $car->name;
+            var_dump($carDropDown);
+        }  
  
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
             return $this->redirect(['list']);
         } else {       
-            return $this->render('create', ['model' => $model]);
+            return $this->render('create', ['model' => $model,'userDropDown'=>$userDropDown,'carDropDown'=>$carDropDown]);
         }
     }
     /**
@@ -47,6 +64,19 @@ class Users_carsController extends Controller
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel
         ]);
+    }
+
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
     }
     /**
      * Update
@@ -81,6 +111,8 @@ class Users_carsController extends Controller
         
        return $this->redirect(['list']);
     }
-    
+
+
+
 
 }

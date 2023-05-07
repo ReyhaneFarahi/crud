@@ -20,8 +20,8 @@ class m230503_132947_users_cars extends Migration
         $this->createTable('{{%users_cars}}', [
             'users_id' => $this->integer(),
             'cars_id' => $this->integer(),
-            'id' => $this->integer(),
-            'PRIMARY KEY(id)',
+            'id' => $this->primaryKey(),
+
         ]);
 
         // creates index for column `users_id`
