@@ -26,7 +26,6 @@ table th,td{
             'value' => function ($users_cars) {
                 return $users_cars->users_id;
             },
-            'label' => 'users_id'
         ],
         'cars_id',
         [

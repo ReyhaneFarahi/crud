@@ -11,9 +11,6 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'family') ?>
     <?= $form->field($model, 'national_code') ?>
 
-    <?= Html::activeDropDownList($model, 'id',
-      ArrayHelper::map(Users::find()->all(), 'id', 'name')) ?>
-
     <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>
  
 <?php ActiveForm::end(); ?>
