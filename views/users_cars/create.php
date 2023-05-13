@@ -5,18 +5,30 @@ use app\models\Users_cars;
 use app\models\Users;
 use app\models\Cars;
 use yii\helpers\ArrayHelper;
+use kartik\select2\Select2;
 ?>
 
 <?php $form = ActiveForm::begin(); ?>
  
- 
-    <?= Html::activeDropDownList($model, 'users_id',
-      ArrayHelper::map(Users::find()->all(), 'id', 'name')) ?>    
-
-
-    <?= Html::activeDropDownList($model, 'cars_id',
-      ArrayHelper::map(Cars::find()->all(), 'id', 'name')) ?>
-
+  <?php
+    echo $form->field($model, 'users_id')->widget(Select2::classname(), [
+    'data' => $userDropDown,
+    'options' => ['placeholder' => 'select the userName ...'],
+    'pluginOptions' => [
+    'allowClear' => true,
+    ],
+    ]);
+    ?>
+  <?php
+    echo $form->field($model, 'cars_id')->widget(Select2::classname(), [
+    'data' => $carDropDown,
+    'options' => ['placeholder' => 'select the carName ...'],
+    'pluginOptions' => [
+    'allowClear' => true,
+    ],
+    ]);
+    ?>
+  
     <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>
  
 <?php ActiveForm::end(); ?>

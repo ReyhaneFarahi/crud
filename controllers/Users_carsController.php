@@ -9,12 +9,13 @@ use app\models\Users;
 use app\models\Users_carsSearch;
 use yii\data\ActiveDataProvider ;
 use yii\web\NotFoundHttpException;
+use conquer\select2\Select2Action;
+use app\components\Action1;
 /**
  * manual CRUD
  **/
 class Users_carsController extends Controller
-{  
-    
+{   
     public function actionDataProvider(){
         $query = Users_cars::find();
         $provider = new ActiveDataProvider([
@@ -53,6 +54,8 @@ class Users_carsController extends Controller
             return $this->render('create', ['model' => $model,'userDropDown'=>$userDropDown,'carDropDown'=>$carDropDown]);
         }
     }
+
+    
     /**
      * Read
      */
