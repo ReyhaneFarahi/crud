@@ -38,19 +38,17 @@ class Users_carsController extends Controller
         $users = Users::find()->all();
         foreach ($users as $user) {
             $userDropDown[$user->id] = $user->name;
-            var_dump($userDropDown);
         }
         $carDropDown=[];
         $cars = Cars::find()->all();
         foreach ($cars as $car) {
             $carDropDown[$car->id] = $car->name;
-            var_dump($carDropDown);
         }  
- 
+        if(isset($_POST['user_id']) and isset($_POST['cars_id'])){
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
             return $this->redirect(['list']);
-        } else {       
+        }} else {       
             return $this->render('create', ['model' => $model,'userDropDown'=>$userDropDown,'carDropDown'=>$carDropDown]);
         }
     }
@@ -68,6 +66,13 @@ class Users_carsController extends Controller
             'searchModel' => $searchModel
         ]);
     }
+
+
+    public function actionLoad()
+    {    
+        return $this->render('load');
+    }
+
 
     public function actions()
     {
