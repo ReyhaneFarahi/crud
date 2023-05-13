@@ -4,14 +4,18 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use app\models\Users_cars;
+use app\models\Cars;
+use app\models\Users;
 use app\models\Users_carsSearch;
 use yii\data\ActiveDataProvider ;
 use yii\web\NotFoundHttpException;
+use conquer\select2\Select2Action;
+use app\components\Action1;
 /**
  * manual CRUD
  **/
 class Users_carsController extends Controller
-{  
+{   
     public function actionDataProvider(){
         $query = Users_cars::find();
         $provider = new ActiveDataProvider([
@@ -27,15 +31,29 @@ class Users_carsController extends Controller
      */
     public function actionCreate()
     {
+        
         $model = new Users_cars();
- 
+
+        $userDropDown=[];
+        $users = Users::find()->all();
+        foreach ($users as $user) {
+            $userDropDown[$user->id] = $user->name;
+        }
+        $carDropDown=[];
+        $cars = Cars::find()->all();
+        foreach ($cars as $car) {
+            $carDropDown[$car->id] = $car->name;
+        }  
+        if(isset($_POST['user_id']) and isset($_POST['cars_id'])){
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
             return $this->redirect(['list']);
-        } else {       
-            return $this->render('create', ['model' => $model]);
+        }} else {       
+            return $this->render('create', ['model' => $model,'userDropDown'=>$userDropDown,'carDropDown'=>$carDropDown]);
         }
     }
+
+    
     /**
      * Read
      */
@@ -47,6 +65,26 @@ class Users_carsController extends Controller
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel
         ]);
+    }
+
+
+    public function actionLoad()
+    {    
+        return $this->render('load');
+    }
+
+
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
     }
     /**
      * Update
@@ -81,6 +119,8 @@ class Users_carsController extends Controller
         
        return $this->redirect(['list']);
     }
-    
+
+
+
 
 }
